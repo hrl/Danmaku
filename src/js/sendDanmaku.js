@@ -15,7 +15,7 @@ window.onload = function (){
 				body: body,
 				style: {},
 				start_time: startTime,
-				spoiler: ifSpolier
+				spoiler: ifSpolier,
 			}
             xhr.open("POST", "/api/v1/danmakus/" + danmakuId + "/tsukkomis");
             xsrfToken = getCookie("_xsrf");
@@ -32,7 +32,7 @@ window.onload = function (){
 			$("input").style.width = (width - 80).toString() + "px";
 			$("input").style.height = height.toString() + "px";
 		} else {
-			sendDanmaku(evt.startTime, false);
+			sendDanmaku(evt.danmakuId, evt.startTime, false);
 		}
 	}, false)
 }

@@ -207,10 +207,11 @@
 
 			tools.warp(video, height, width);
 		},
-		startSend: function (iframe, video){
+		startSend: function (iframe, video, danmakuId){
 			iframe.contentWindow.postMessage({
 				send: 1,
-				startTime: video.currentTime 
+				startTime: video.currentTime,
+                danmakuId: danmakuId
 			}, "*");
 		},
 		getDanmaku: function (){}
