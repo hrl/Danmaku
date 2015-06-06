@@ -18,7 +18,7 @@ window.onload = function (){
 		}
 	}
 	window.addEventListener("message", function(evt){
-		if (!send) {
+		if (!evt.data.send) {
 			var width = evt.data.width;
 			var height = evt.data.height;
 			$("input").style.width = (width - 80).toString() + "px";
