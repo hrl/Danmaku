@@ -47,3 +47,9 @@ def object_get(query, msg):
         except Exception:
             raise StopValidation(msg)
     return _object_get
+
+
+def danmaku_get(form, field):
+    _ = field.gettext
+    return object_get(models.Danmaku.query,
+                      _('Invalid Danmaku.'))(form, field)
