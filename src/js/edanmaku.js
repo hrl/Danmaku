@@ -232,7 +232,7 @@
 				video.addEventListener("playing", function(){
 					CM.start();
 				}, false);	
-				vide.addEventListener("pause", function(){
+				video.addEventListener("pause", function(){
 					CM.stop();
 				}, false)
 			}, false);
