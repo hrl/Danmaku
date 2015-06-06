@@ -69,7 +69,7 @@
 			sendBegin.style.width = "80px";
 			sendBegin.innerHTML = "发送弹幕"
 			sendBegin.addEventListener("click", function () {
-				startSent(sendBox, target);
+				edanmaku.startSend(sendBox, target, "f26dc105ffe241aeb0afcd2c217e8355");
 			}, false);
 			text.appendChild(sendBegin);
 
@@ -235,10 +235,11 @@
 				}, false)
 			}, false);
 		},
-		startSend: function (iframe, video){
+		startSend: function (iframe, video, danmakuId){
 			iframe.contentWindow.postMessage({
 				send: 1,
-				startTime: video.currentTime; 
+				startTime: video.currentTime,
+                danmakuId: danmakuId
 			}, "*");
 		},
 		// showDanmaku: function (socket){

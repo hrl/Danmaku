@@ -254,12 +254,15 @@ class Tsukkomi(Base):
             "id": self.id,
             "danmaku_uuid": self.danmaku_id.hex,
             "owner": (self.owner and self.owner.format_detail()) or None,
-            "body": self.body,
+            "text": self.body,
             "spoiler": self.spoiler,
-            "style": json.loads(self.style),
-            "start_time": self.start_time,
+            #"style": json.loads(self.style),
+            "stime": self.start_time,
             "create_time": self.create_time.isoformat(),
         }
+        detail["mode"] = 1
+        detail["size"] = 25
+        detail["color"] = 0xffffff
         return detail
 
 
