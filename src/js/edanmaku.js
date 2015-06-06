@@ -204,22 +204,24 @@
 		// create a div for danmu to display
 		// and let user control the video
 		init: function (){
-			video.addEventListener("loadstart", function(){
-				var video = $("video") || $("object");
+			var video = $("video") || $("object");
+			video.addEventListener("canplay", function(){
 				var height = tools.getStyle(video, "height");
 				var width = tools.getStyle(video, "width");
 				tools.warp(video, height, width);
+
 				var socket = new WebSocket("ws://112.74.106.159:2333/api/v1/danmakus/f26dc105ffe241aeb0afcd2c217e8355/tsukkomis/ws");
+				socket.addEventListener("open", function(){
+					socket.send(JSON.stringify({
+						action: "subscribe",
+						id: 1,
+						body: {}
+					}));
+				})
 				var CM = new CommentManager($(".edanmaku-video"));
 				CM.init();
-				socket.send(JSON.stringify({
-					action: "subscribe",
-					id: 1,
-					body: {}
-				}));
-
 				socket.addEventListener("message", function(event){
-					var danmaku = event.data;
+					var danmaku = JSON.parse(event.data).body;
 					if (danmaku.length) {
 						CM.load(danmaku);
 					} else {
@@ -230,7 +232,7 @@
 				video.addEventListener("playing", function(){
 					CM.start();
 				}, false);	
-				vide.addEventListener("pause", function(){
+				video.addEventListener("pause", function(){
 					CM.stop();
 				}, false)
 			}, false);
