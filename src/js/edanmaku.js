@@ -1,4 +1,5 @@
 (function () {
+	var flag = 1;
 	//basic functions 
 	function $(arg) {
 		return document.querySelector(arg);
@@ -253,7 +254,6 @@
 		// }
 	}
 
-	var flag = 1;
 	window.onload = function () {
 		edanmaku.loadSrc();
 		edanmaku.init();
