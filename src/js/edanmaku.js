@@ -210,7 +210,7 @@
 		startSend: function (iframe, video){
 			iframe.contentWindow.postMessage({
 				send: 1,
-				startTime: video.currentTime; 
+				startTime: video.currentTime 
 			}, "*");
 		},
 		getDanmaku: function (){}
