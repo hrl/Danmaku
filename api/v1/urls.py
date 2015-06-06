@@ -8,4 +8,5 @@ urls = [
     (r"/danmakus", "danmaku.DanmakusHandler"),
     (r"/danmakus/(?P<id>[0-9a-fA-F]{32})", "danmaku.DanmakuHandler"),
     (r"/files/(?P<hashcode>[0-9a-fA-F]{32})", "file.FileHandler"),
+    (r"/videos/youku/(?P<vid>[0-9]+)", "video.youku.YoukuVideoHandler"),
 ]
