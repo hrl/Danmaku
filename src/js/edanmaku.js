@@ -199,7 +199,7 @@
 
 			head.appendChild(playerStyle);
 			head.appendChild(CCLcss);
-			$("body").appendChild(CCLjs);
+			head.appendChild(CCLjs);
 		},
 		// detect the video player
 		// create a div for danmu to display
@@ -221,16 +221,16 @@
 					});
 					var CM = new CommentManager($(".edanmaku-video"));
 					CM.init();
+					socket.addEventListener("message", function(event){
+						var danmaku = JSON.parse(event.data).body;
+						if (danmaku.length) {
+							CM.load(danmaku);
+						} else {
+							CM.insert(danmaku);
+						}
+					}, false);
 				}
 				flag = 0;
-				socket.addEventListener("message", function(event){
-					var danmaku = JSON.parse(event.data).body;
-					if (danmaku.length) {
-						CM.load(danmaku);
-					} else {
-						CM.insert(danmaku);
-					}
-				}, false);
 
 				video.addEventListener("playing", function(){
 					CM.start();
