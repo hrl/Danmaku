@@ -241,11 +241,13 @@ class WebSocketAPIHandler(tornado.websocket.WebSocketHandler):
         return self.write_ws_response(message_id, response, status_code)
 
     def write_ws_response(self, message_id=None, response=None, status_code=200):
-            self.write_message(json.dumps({
-                "id": message_id,
-                "status": status_code,
-                "body": response
-            }))
+        if isinstance(response, str):
+            response = json.loads(response)
+        self.write_message(json.dumps({
+            "id": message_id,
+            "status": status_code,
+            "body": response
+        }))
 
     def validation_error(self, form):
         response = list()
