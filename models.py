@@ -231,12 +231,16 @@ class Tsukkomi(Base):
             create_time = timenow
         if id is None:
             id = danmaku.tsukkomi.count() + 1
+        if spoiler:
+            spoiler = True
+        else:
+            spoiler = False
         self.id = id
         self.danmaku = danmaku
         self.owner = owner
         self.body = body
         self.spoiler = spoiler
-        self.style = style
+        self.style = json.dumps(style)
         self.start_time = start_time
         self.create_time = create_time
 
