@@ -221,7 +221,7 @@
 				var CM = new CommentManager($(".edanmaku-video"));
 				CM.init();
 				socket.addEventListener("message", function(event){
-					var danmaku = event.data;
+					var danmaku = event.data.body;
 					if (danmaku.length) {
 						CM.load(danmaku);
 					} else {
