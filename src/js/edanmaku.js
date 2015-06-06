@@ -26,10 +26,10 @@
 			// input the height and width of sendBox
 			iframe.addEventListener("load", function(){
 				iframe.contentWindow.postMessage({
+					send: 0,
 					height: height,
 					width: width
-					// uncertain arg of "*"
-				}, "*");
+				}, "*"); // uncertain arg of "*"
 			}, false)
 		},
 		warp: function (target, height, width) {
@@ -60,8 +60,18 @@
 			sendBox.id = "_sendBox";
 			sendBox.src = "sendDanma.html";
 			sendBox.frameBorder = 0;
+			sendBox.style.width = (parseInt(width) - 80).toString() + "px";
 			text.appendChild(sendBox);
 			tools.setSendBox(sendBox, 30, parseInt(width));
+
+			var sendBegin = document.createElement("div");
+			sendBegin.id = "sendMessage"
+			sendBegin.style.width = "80px";
+			sendBegin.innerHTML = "发送弹幕"
+			sendBegin.addEventListener("click", function () {
+				startSent(sendBox, target);
+			}, false);
+			text.appendChild(sendBegin);
 
 			// control is a bar for user to control the video
 			control.className = "edanmaku-control";
@@ -197,8 +207,13 @@
 
 			tools.warp(video, height, width);
 		},
-		sendDanmu: function (){},
-		getDanmu: function (){}
+		startSend: function (iframe, video){
+			iframe.contentWindow.postMessage({
+				send: 1,
+				startTime: video.currentTime; 
+			}, "*");
+		},
+		getDanmaku: function (){}
 	}
 
 	window.onload = function () {
