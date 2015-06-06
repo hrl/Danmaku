@@ -211,14 +211,15 @@
 				tools.warp(video, height, width);
 
 				var socket = new WebSocket("ws://112.74.106.159:2333/api/v1/danmakus/f26dc105ffe241aeb0afcd2c217e8355/tsukkomis/ws");
+				socket.addEventListener("open", function(){
+					socket.send(JSON.stringify({
+						action: "subscribe",
+						id: 1,
+						body: {}
+					}));
+				})
 				var CM = new CommentManager($(".edanmaku-video"));
 				CM.init();
-				socket.send(JSON.stringify({
-					action: "subscribe",
-					id: 1,
-					body: {}
-				}));
-
 				socket.addEventListener("message", function(event){
 					var danmaku = event.data;
 					if (danmaku.length) {
