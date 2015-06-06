@@ -181,7 +181,7 @@
 			CCLcss.href = "css/style.min.css";
 
 			var CCLjs = document.createElement("script");
-			CCLjs.src = "css/CommentCoreLibrary.min.js"
+			CCLjs.src = "js/CommentCoreLibrary.min.js"
 
 			head.appendChild(playerStyle);
 			head.appendChild(CCLcss);
