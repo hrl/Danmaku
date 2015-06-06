@@ -251,6 +251,9 @@
 
 	window.onload = function () {
 		edanmaku.loadSrc();
-		edanmaku.init();
+		var video = $("video") || $("object");
+		video.onload = function(){
+			edanmaku.init();
+		}
 	}
 })()
