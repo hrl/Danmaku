@@ -33,9 +33,9 @@ def init_models():
     tsukkomi_with_user = models.Tsukkomi(
         danmaku=danmaku,
         body="丢锅啦",
-        style=json.dumps({
+        style={
             "color": "FFF",
-        }),
+        },
         start_time=1,
         spoiler=False,
         owner=user,
