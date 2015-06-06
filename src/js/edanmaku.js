@@ -183,15 +183,18 @@
 			var playerStyle = document.createElement("link");
 			playerStyle.rel = "stylesheet";
 			playerStyle.type = "text/css";
-			playerStyle.href = "css/edanmaku.css";
+			playerStyle.href = "edanmaku.css";
 
 			var CCLcss = document.createElement("link");
 			CCLcss.rel = "stylesheet";
 			CCLcss.type = "text/css";
-			CCLcss.href = "css/style.min.css";
+			CCLcss.href = "style.min.css";
 
 			var CCLjs = document.createElement("script");
-			CCLjs.src = "js/CommentCoreLibrary.min.js"
+			CCLjs.src = "CommentCoreLibrary.min.js"
+
+			// var socket = document.createElement("script");
+			// socket.src = "https://cdn.socket.io/socket.io-1.3.5.js";
 
 			head.appendChild(playerStyle);
 			head.appendChild(CCLcss);
@@ -204,8 +207,33 @@
 			var video = $("video") || $("object");
 			var height = tools.getStyle(video, "height");
 			var width = tools.getStyle(video, "width");
-
 			tools.warp(video, height, width);
+			video.addEventListener("load", function(){
+				var socket = new WebSocket("ws://112.74.106.159:2333/api/v1/danmakus/f26dc105ffe241aeb0afcd2c217e8355/tsukkomis/ws");
+				var CM = new CommentManager($(".edanmaku-video"));
+				CM.init();
+				socket.send(JSON.stringify({
+					action: "subscribe",
+					id: 1,
+					body: {}
+				}));
+
+				socket.addEventListener("message", function(event){
+					var danmaku = event.data;
+					if (danmaku.length) {
+						CM.load(danmaku);
+					} else {
+						CM.insert(danmaku);
+					}
+				}, false);
+
+				video.addEventListener("playing", function(){
+					CM.start();
+				}, false);	
+				vide.addEventListener("pause", function(){
+					CM.stop();
+				}, false)
+			}, false);
 		},
 		startSend: function (iframe, video){
 			iframe.contentWindow.postMessage({
@@ -213,7 +241,11 @@
 				startTime: video.currentTime; 
 			}, "*");
 		},
-		getDanmaku: function (){}
+		// showDanmaku: function (socket){
+		// 	socket.addEventListener("danmaku", function(data){
+		// 		CM.insert(danmaku)
+		// 	}, false);
+		// }
 	}
 
 	window.onload = function () {
