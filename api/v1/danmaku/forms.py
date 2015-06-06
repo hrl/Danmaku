@@ -71,9 +71,7 @@ class DanmakuTsukkomisForm(Form):
         InputRequired(),
     ])
     style = Field('style')
-    start_time = IntegerField('start_time', [
-        InputRequired(),
-    ])
+    start_time = IntegerField('start_time', default=0)
     spoiler = Field('spoiler', [
         baseValidators.boolean_check,
     ])
