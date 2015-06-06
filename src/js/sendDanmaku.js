@@ -3,7 +3,11 @@ window.onload = function (){
 	function $(arg) {
 		return document.querySelector(arg);
 	}
-	function sendDanmaku(startTime, ifSpolier){
+    function getCookie(name) {
+        var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+        return r ? r[1] : undefined;
+    }
+	function sendDanmaku(danmakuId, startTime, ifSpolier){
 		var xhr = new XMLHttpRequest();
 		var body = $("input").value;
 		if (body) {
@@ -13,6 +17,10 @@ window.onload = function (){
 				start_time: startTime,
 				spoiler: ifSpolier
 			}
+            xhr.open("POST", "/api/v1/danmakus/" + danmakuId + "/tsukkomis");
+            xsrfToken = getCookie("_xsrf");
+            xhr.setRequestHeader("X-Xsrftoken", xsrfToken);
+            xhr.send(JSON.stringify(data))
 		} else {
 			return 0;
 		}
@@ -24,7 +32,7 @@ window.onload = function (){
 			$("input").style.width = (width - 80).toString() + "px";
 			$("input").style.height = height.toString() + "px";
 		} else {
-			sendDanmaku();
+			sendDanmaku(evt.startTime, false);
 		}
 	}, false)
 }
