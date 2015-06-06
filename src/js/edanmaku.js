@@ -205,10 +205,11 @@
 		// and let user control the video
 		init: function (){
 			var video = $("video") || $("object");
-			video.addEventListener("loadstart", function(){
+			video.addEventListener("canplay", function(){
 				var height = tools.getStyle(video, "height");
 				var width = tools.getStyle(video, "width");
 				tools.warp(video, height, width);
+
 				var socket = new WebSocket("ws://112.74.106.159:2333/api/v1/danmakus/f26dc105ffe241aeb0afcd2c217e8355/tsukkomis/ws");
 				var CM = new CommentManager($(".edanmaku-video"));
 				CM.init();
