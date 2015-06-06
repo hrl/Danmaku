@@ -7,4 +7,5 @@ urls = [
     (r"/user", "user.ProfileHandler"),
     (r"/danmakus", "danmaku.DanmakusHandler"),
     (r"/danmakus/(?P<id>[0-9a-fA-F]{32})", "danmaku.DanmakuHandler"),
+    (r"/files/(?P<hashcode>[0-9a-fA-F]{32})", "file.FileHandler"),
 ]
