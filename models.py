@@ -260,10 +260,9 @@ class Tsukkomi(Base):
             "stime": self.start_time,
             "create_time": self.create_time.isoformat(),
         }
-        style = json.loads(self.style) or {}
-        detail["mode"] = style.get("mode", 1)
-        detail["size"] = style.get("size", 25)
-        detail["color"] = style.get("color", "FFF")
+        detail["mode"] = 1
+        detail["size"] = 25
+        detail["color"] = 0xffffff
         return detail
 
 
