@@ -251,14 +251,14 @@ class Tsukkomi(Base):
 
     def format_detail(self):
         detail = {
-            "id": self.id,
-            "danmaku_uuid": self.danmaku_id.hex,
-            "owner": (self.owner and self.owner.format_detail()) or None,
+            #"id": self.id,
+            #"danmaku_uuid": self.danmaku_id.hex,
+            #"owner": (self.owner and self.owner.format_detail()) or None,
             "text": self.body,
-            "spoiler": self.spoiler,
+            #"spoiler": self.spoiler,
             #"style": json.loads(self.style),
             "stime": self.start_time,
-            "create_time": self.create_time.isoformat(),
+            #"create_time": self.create_time.isoformat(),
         }
         detail["mode"] = 1
         detail["size"] = 25
