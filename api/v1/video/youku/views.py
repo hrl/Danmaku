@@ -9,8 +9,6 @@ from urllib.parse import (
 
 from tornado import gen
 
-from pyquery.pyquery import PyQuery
-
 import util
 import models
 from settings import cache_settings
