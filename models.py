@@ -256,10 +256,14 @@ class Tsukkomi(Base):
             "owner": (self.owner and self.owner.format_detail()) or None,
             "body": self.body,
             "spoiler": self.spoiler,
-            "style": json.loads(self.style),
+            #"style": json.loads(self.style),
             "start_time": self.start_time,
             "create_time": self.create_time.isoformat(),
         }
+        style = json.loads(self.style)
+        detail["mode"] = style.get("mode", 1)
+        detail["size"] = style.get("size", 25)
+        detail["color"] = style.get("color", "FFF")
         return detail
 
 
