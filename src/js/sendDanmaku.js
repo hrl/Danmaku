@@ -32,7 +32,7 @@ window.onload = function (){
 			$("input").style.width = (width - 80).toString() + "px";
 			$("input").style.height = height.toString() + "px";
 		} else {
-			sendDanmaku(evt.danmakuId, evt.startTime, false);
+			sendDanmaku(evt.data.danmakuId, evt.data.startTime, false);
 		}
 	}, false)
 }

@@ -69,7 +69,7 @@
 			sendBegin.style.width = "80px";
 			sendBegin.innerHTML = "发送弹幕"
 			sendBegin.addEventListener("click", function () {
-				edanmaku.startSend(sendBox, target);
+				edanmaku.startSend(sendBox, target, "f26dc105ffe241aeb0afcd2c217e8355");
 			}, false);
 			text.appendChild(sendBegin);
 
