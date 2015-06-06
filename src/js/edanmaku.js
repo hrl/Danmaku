@@ -58,7 +58,7 @@
 			text.style.width = width;
 			var sendBox = document.createElement("iframe");
 			sendBox.id = "_sendBox";
-			sendBox.src = "sendDanma.html";
+			sendBox.src = "http://112.74.106.159:2333/sendDanma.html";
 			sendBox.frameBorder = 0;
 			sendBox.style.width = (parseInt(width) - 80).toString() + "px";
 			text.appendChild(sendBox);
