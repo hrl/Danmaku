@@ -14,6 +14,7 @@ from sqlalchemy import (
     Table,
     Column,
     Integer,
+    BigInteger,
     Unicode,
     UnicodeText,
     Boolean,
@@ -101,6 +102,7 @@ class User(Base):
 
     def format_detail(self, call_by_admin=False):
         detail = {
+            "uuid": self.id.hex,
             "username": self.username,
         }
         return detail
@@ -152,5 +154,164 @@ class Permission(Base):
             "uuid": self.id.hex,
             "name": self.name,
             "perm": self.perm
+        }
+        return detail
+
+
+class Danmaku(Base):
+    __tablename__ = 'danmaku'
+    id = Column(GUID(),
+                default=uuid.uuid4,
+                primary_key=True)
+    name = Column(Unicode(20),
+                  nullable=False)
+    tsukkomi = relationship("Tsukkomi",
+                            backref=backref("danmaku",
+                                            lazy="noload"),
+                            cascade="all, delete-orphan",
+                            lazy="dynamic")
+    create_time = Column(DateTime(timezone=True),
+                         nullable=False)
+
+    def __init__(self, name,
+                 create_time=None):
+        timenow = util.get_utc_time()
+        if create_time is None:
+            create_time = timenow
+        self.name = name
+        self.create_time = create_time
+
+    def __repr__(self):
+        return "<Danmaku: %s>" % (self.name)
+
+    def format_detail(self):
+        detail = {
+            "uuid": self.id.hex,
+            "name": self.name,
+            "create_time": self.create_time.isoformat(),
+        }
+        return detail
+
+
+class Tsukkomi(Base):
+    __tablename__ = 'tsukkomi'
+    __table_args__ = (
+        PrimaryKeyConstraint('id', 'danmaku_id', name='tsukkomi_danmaku_pk'),
+    )
+    id = Column(Integer, index=True)
+    danmaku_id = Column(GUID(), ForeignKey('danmaku.id'), index=True)
+
+    owner_id = Column(GUID(), ForeignKey('user.id'), nullable=True)
+    owner = relationship("User",
+                         backref=backref("tsukkomi",
+                                         lazy="dynamic",
+                                         cascade="all"),
+                         lazy="subquery")
+
+    body = Column(UnicodeText(),
+                  nullable=False)
+    spoiler = Column(Boolean,
+                     default=False,
+                     nullable=False)
+    style = Column(UnicodeText(),
+                   nullable=False)
+    # s
+    start_time = Column(Integer,
+                        nullable=False)
+    source = Column(UnicodeText(100),
+                    nullable=True)
+    create_time = Column(DateTime(timezone=True),
+                         nullable=False)
+
+    def __init__(self, danmaku, body, style, start_time,
+                 spoiler=False, owner=None,
+                 create_time=None, id=None):
+        timenow = util.get_utc_time()
+        if create_time is None:
+            create_time = timenow
+        if id is None:
+            id = danmaku.tsukkomi.count() + 1
+        self.id = id
+        self.danmaku = danmaku
+        self.owner = owner
+        self.body = body
+        self.spoiler = spoiler
+        self.style = style
+        self.start_time = start_time
+        self.create_time = create_time
+
+    def __repr__(self):
+        return "<Tsukkomi: %s, %d, %s>" % (self.danmaku_id.hex,
+                                           self.id,
+                                           self.body)
+
+    def format_detail(self):
+        detail = {
+            "id": self.id,
+            "danmaku_uuid": self.danmaku_id.hex,
+            "owner": (self.owner and self.owner.format_detail()) or None,
+            "body": self.body,
+            "spoiler": self.spoiler,
+            "style": json.loads(self.style),
+            "start_time": self.start_time,
+            "create_time": self.create_time.isoformat(),
+        }
+        return detail
+
+
+class File(Base):
+    __tablename__ = 'file'
+    hashcode = Column(CHAR(32),
+                      primary_key=True)
+
+    danmaku_id = Column(GUID(), ForeignKey('danmaku.id'), index=True)
+    danmaku = relationship("Danmaku",
+                           backref=backref("file",
+                                           lazy="noload",
+                                           cascade="all, delete-orphan"),
+                           lazy="subquery")
+
+    def __init__(self, hashcode, danmaku):
+        self.hashcode = hashcode
+        self.danmaku = danmaku
+
+    def __repr__(self):
+        return "<File: %s, %s>" % (self.danmaku.name, self.hashcode)
+
+    def format_detail(self):
+        detail = {
+            "hashcode": self.hashcode,
+            "danmaku": self.danmaku.format_detail(),
+        }
+        return detail
+
+
+class YoukuVideo(Base):
+    __tablename__ = 'youku_video'
+    vid = Column(Integer,
+                 primary_key=True)
+    vid_encoded = Column(CHAR(64),
+                         index=True)
+
+    danmaku_id = Column(GUID(), ForeignKey('danmaku.id'), index=True)
+    danmaku = relationship("Danmaku",
+                           backref=backref("youku_video",
+                                           lazy="noload",
+                                           cascade="all, delete-orphan"),
+                           lazy="subquery")
+
+    def __init__(self, vid, vid_encoded, danmaku):
+        self.vid = vid
+        self.vid_encoded = vid_encoded
+        self.danmaku = danmaku
+
+    def __repr__(self):
+        return "<YoukuVideo: %s, %d>" % (self.danmaku.name, self.vid)
+
+    def format_detail(self):
+        detail = {
+            "vid": str(self.vid),
+            "vidEncoded": self.vid_encoded,
+            "danmaku": self.danmaku.format_detail(),
         }
         return detail
