@@ -204,8 +204,8 @@
 		// create a div for danmu to display
 		// and let user control the video
 		init: function (){
+			var video = $("video") || $("object");
 			video.addEventListener("loadstart", function(){
-				var video = $("video") || $("object");
 				var height = tools.getStyle(video, "height");
 				var width = tools.getStyle(video, "width");
 				tools.warp(video, height, width);
