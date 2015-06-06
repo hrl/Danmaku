@@ -155,7 +155,7 @@ class DanmakuTsukkomisHandler(base.APIBaseHandler):
                                           danmaku=id)
         if form.validate():
             tsukkomi = self.create_tsukkomi(form)
-            result_json = json.dumps([tsukkomi.format_detail()])
+            result_json = json.dumps(tsukkomi.format_detail())
             trediscli_co.publish('danmaku:%s' % form.danmaku.data.id.hex,
                                  result_json)
             self.set_status(201)
