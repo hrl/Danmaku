@@ -183,15 +183,15 @@
 			var playerStyle = document.createElement("link");
 			playerStyle.rel = "stylesheet";
 			playerStyle.type = "text/css";
-			playerStyle.href = "edanmaku.css";
+			playerStyle.href = "http://112.74.106.159:2333/css/edanmaku.css";
 
 			var CCLcss = document.createElement("link");
 			CCLcss.rel = "stylesheet";
 			CCLcss.type = "text/css";
-			CCLcss.href = "style.min.css";
+			CCLcss.href = "http://112.74.106.159:2333/css/style.min.css";
 
 			var CCLjs = document.createElement("script");
-			CCLjs.src = "CommentCoreLibrary.min.js"
+			CCLjs.src = "http://112.74.106.159:2333/js/CommentCoreLibrary.min.js"
 
 			// var socket = document.createElement("script");
 			// socket.src = "https://cdn.socket.io/socket.io-1.3.5.js";
