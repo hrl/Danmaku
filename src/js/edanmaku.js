@@ -229,15 +229,14 @@
 							CM.insert(danmaku);
 						}
 					}, false);
+				    video.addEventListener("playing", function(){
+					    CM.start();
+    				}, false);	
+	    			video.addEventListener("pause", function(){
+		    			CM.stop();
+			    	}, false)
 				}
 				flag = 0;
-
-				video.addEventListener("playing", function(){
-					CM.start();
-				}, false);	
-				video.addEventListener("pause", function(){
-					CM.stop();
-				}, false)
 			}, false);	
 		},
 		startSend: function (iframe, video, danmakuId){
