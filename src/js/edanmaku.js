@@ -252,8 +252,8 @@
 	window.onload = function () {
 		edanmaku.loadSrc();
 		var video = $("video") || $("object");
-		video.onload = function(){
-			edanmaku.init();
+		video.onloadstart = function(){
+			setTimeout(edanmaku.init, 1000);
 		}
 	}
 })()
