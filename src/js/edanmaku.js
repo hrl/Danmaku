@@ -44,12 +44,12 @@
 			var parent = target.parentNode;
 
 			// unit contain the full parts
-			unit.className = "edanmaku-unit";
+			unit.className = "edanmaku-unit abp";
 			unit.style.height = height;
 			unit.style.width = width;
 
 			// video displays danmu
-			video.className = "edanmaku-video";
+			video.className = "edanmaku-video container";
 			video.style.height = height;
 			video.style.width = width;
 
@@ -204,38 +204,40 @@
 		// create a div for danmu to display
 		// and let user control the video
 		init: function (){
-			var video = $("video") || $("object");
-			video.addEventListener("canplay", function(){
-				var height = tools.getStyle(video, "height");
-				var width = tools.getStyle(video, "width");
-				tools.warp(video, height, width);
+			if (flag) {
+				var video = $("video") || $("object");
+				video.addEventListener("canplay", function(){
+					var height = tools.getStyle(video, "height");
+					var width = tools.getStyle(video, "width");
+					tools.warp(video, height, width);
+					var socket = new WebSocket("ws://112.74.106.159:2333/api/v1/danmakus/f26dc105ffe241aeb0afcd2c217e8355/tsukkomis/ws");
+					socket.addEventListener("open", function(){
+						socket.send(JSON.stringify({
+							action: "subscribe",
+							id: 1,
+							body: {}
+						}));
+					})
+					var CM = new CommentManager($(".edanmaku-video"));
+					CM.init();
+					socket.addEventListener("message", function(event){
+						var danmaku = JSON.parse(event.data).body;
+						if (danmaku.length) {
+							CM.load(danmaku);
+						} else {
+							CM.insert(danmaku);
+						}
+					}, false);
 
-				var socket = new WebSocket("ws://112.74.106.159:2333/api/v1/danmakus/f26dc105ffe241aeb0afcd2c217e8355/tsukkomis/ws");
-				socket.addEventListener("open", function(){
-					socket.send(JSON.stringify({
-						action: "subscribe",
-						id: 1,
-						body: {}
-					}));
-				})
-				var CM = new CommentManager($(".edanmaku-video"));
-				CM.init();
-				socket.addEventListener("message", function(event){
-					var danmaku = JSON.parse(event.data).body;
-					if (danmaku.length) {
-						CM.load(danmaku);
-					} else {
-						CM.insert(danmaku);
-					}
-				}, false);
-
-				video.addEventListener("playing", function(){
-					CM.start();
+					video.addEventListener("playing", function(){
+						CM.start();
+					}, false);	
+					video.addEventListener("pause", function(){
+						CM.stop();
+					}, false)
 				}, false);	
-				video.addEventListener("pause", function(){
-					CM.stop();
-				}, false)
-			}, false);
+			}
+			flag = 0;
 		},
 		startSend: function (iframe, video, danmakuId){
 			iframe.contentWindow.postMessage({
@@ -251,6 +253,7 @@
 		// }
 	}
 
+	var flag = 1;
 	window.onload = function () {
 		edanmaku.loadSrc();
 		edanmaku.init();
