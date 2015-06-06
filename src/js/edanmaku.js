@@ -205,9 +205,9 @@
 		// create a div for danmu to display
 		// and let user control the video
 		init: function (){
-			if (flag) {
-				var video = $("video") || $("object");
-				video.addEventListener("canplay", function(){
+			var video = $("video") || $("object");
+			video.addEventListener("canplay", function(){
+				if (flag) {
 					var height = tools.getStyle(video, "height");
 					var width = tools.getStyle(video, "width");
 					tools.warp(video, height, width);
@@ -218,27 +218,27 @@
 							id: 1,
 							body: {}
 						}));
-					})
+					});
 					var CM = new CommentManager($(".edanmaku-video"));
 					CM.init();
-					socket.addEventListener("message", function(event){
-						var danmaku = JSON.parse(event.data).body;
-						if (danmaku.length) {
-							CM.load(danmaku);
-						} else {
-							CM.insert(danmaku);
-						}
-					}, false);
+				}
+				flag = 0;
+				socket.addEventListener("message", function(event){
+					var danmaku = JSON.parse(event.data).body;
+					if (danmaku.length) {
+						CM.load(danmaku);
+					} else {
+						CM.insert(danmaku);
+					}
+				}, false);
 
-					video.addEventListener("playing", function(){
-						CM.start();
-					}, false);	
-					video.addEventListener("pause", function(){
-						CM.stop();
-					}, false)
+				video.addEventListener("playing", function(){
+					CM.start();
 				}, false);	
-			}
-			flag = 0;
+				video.addEventListener("pause", function(){
+					CM.stop();
+				}, false)
+			}, false);	
 		},
 		startSend: function (iframe, video, danmakuId){
 			iframe.contentWindow.postMessage({
