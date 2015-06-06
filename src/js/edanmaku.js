@@ -173,15 +173,15 @@
 			var playerStyle = document.createElement("link");
 			playerStyle.rel = "stylesheet";
 			playerStyle.type = "text/css";
-			playerStyle.href = "edanmaku.css";
+			playerStyle.href = "css/edanmaku.css";
 
 			var CCLcss = document.createElement("link");
 			CCLcss.rel = "stylesheet";
 			CCLcss.type = "text/css";
-			CCLcss.href = "style.min.css";
+			CCLcss.href = "css/style.min.css";
 
 			var CCLjs = document.createElement("script");
-			CCLjs.src = "CommentCoreLibrary.min.js"
+			CCLjs.src = "css/CommentCoreLibrary.min.js"
 
 			head.appendChild(playerStyle);
 			head.appendChild(CCLcss);
