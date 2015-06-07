@@ -260,7 +260,8 @@
 	}
 
 	edanmaku.loadSrc();
-	window.onload = function () {
+	window.addEventListener("load", function (){
+		console.log('!');
 		edanmaku.init();
-	}
+	}, false);
 })()
