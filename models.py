@@ -257,7 +257,7 @@ class Tsukkomi(Base):
             "text": self.body,
             #"spoiler": self.spoiler,
             #"style": json.loads(self.style),
-            "stime": self.start_time*1000,
+            "stime": self.start_time,
             #"create_time": self.create_time.isoformat(),
         }
         detail["mode"] = 1
