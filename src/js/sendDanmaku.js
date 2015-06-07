@@ -34,6 +34,7 @@ window.onload = function (){
 			$("input").style.height = height.toString() + "px";
 		} else {
 			sendDanmaku(evt.data.danmakuId, evt.data.startTime, false);
+			$("input").value = "";
 		}
 	}, false)
 }
