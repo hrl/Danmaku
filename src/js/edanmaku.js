@@ -205,7 +205,7 @@
 		// create a div for danmu to display
 		// and let user control the video
 		init: function (){
-			var video = $("video") || $("object");
+			var video = $("video") || $("object") || window._player();
 			var shootDanmaku;
 			window.video = video;
 			video.addEventListener("canplay", function(){
