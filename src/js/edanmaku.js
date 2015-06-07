@@ -300,8 +300,9 @@
 							}
 						}, false);
 						CM.start();
-						var count = 0
-						Pause(this, 5000);
+						while(!_player().getNsData){
+							continue;
+						}
 						var tmp = PlayerInfo().time();
 						shootDanmaku = setInterval(function(){
 							consoel.log("danmaku(");
