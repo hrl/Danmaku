@@ -291,6 +291,7 @@
 						CM.start();
 						var tmp = PlayerInfo().time();
 						shootDanmaku = setInterval(function(){
+							consoel.log("danmaku(");
 							CM.time(parseInt(PlayerInfo().time));
 						}, 100);
 						setInterval(function(){
