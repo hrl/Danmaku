@@ -1,6 +1,6 @@
 (function () {
 	var flag = 1;
-	var domain;
+	var domain = "html5";
 	//basic functions 
 	function $(arg) {
 		return document.querySelector(arg);
@@ -136,8 +136,12 @@
 			},false);
 			progress.addEventListener("click", function(evt){
 				var rate = evt.layerX / progressWidth;
-				target.currentTime = target.duration * rate;
-				bar.style.width = (progressWidth * rate).toString() + "px";
+				if (domain == "html5") {
+					target.currentTime = target.duration * rate;
+					bar.style.width = (progressWidth * rate).toString() + "px";
+				} else (domain == "youku") {
+					target.seek(target.duration * rate);
+				}
 			}, false);
 			// mouse drag to adjust video
 			progress.addEventListener("mousedown", function(){
@@ -250,6 +254,17 @@
 				domain = "youku";
 				var shootDanmaku;
 				window.video = video;
+				video.pause = function(){
+					PlayerPause(1);
+				};
+				video.start = function(){
+					PlayerPause(0);
+				}
+				video.seek = function(seconds){
+					PlayerSeek(seconds)
+				}
+				video.duration = video.alltime;
+
 				(function(){
 					if (flag) {
 						var height = tools.getStyle(video, "height");
@@ -273,16 +288,19 @@
 								CM.insert(danmaku);
 							}
 						}, false);
-						video.addEventListener("playing", function(){
-							CM.start();
-							shootDanmaku = setInterval(function(){
-								CM.time(parseInt(video.currentTime));
-							}, 100);
-						}, false);	
-						video.addEventListener("pause", function(){
-							CM.stop();
-							clearInterval(shootDanmaku);
-						}, false)
+						CM.start();
+						var tmp = PlayerInfo().time();
+						shootDanmaku = setInterval(function(){
+							CM.time(parseInt(PlayerInfo().time));
+						}, 100);
+						setInterval(function(){
+							if (PlayerInfo().time == tmp) {
+								video.paused = 1;
+							} else {
+								video.paused = 0;
+							}
+							tmp = PlayerInfo().time();
+						}, 100);
 					}
 					flag = 0;
 				})()
