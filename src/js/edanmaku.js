@@ -259,8 +259,8 @@
 		// }
 	}
 
+	edanmaku.loadSrc();
 	window.onload = function () {
-		edanmaku.loadSrc();
 		edanmaku.init();
 	}
 })()
