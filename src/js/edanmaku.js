@@ -1,6 +1,6 @@
 (function () {
 	var flag = 1;
-	var window.domain;
+	var domain;
 	//basic functions 
 	function $(arg) {
 		return document.querySelector(arg);
@@ -247,7 +247,7 @@
 					flag = 0;
 				}, false);
 			} else if (video = window._player()) { // if close
-				domian = "youku";
+				domain = "youku";
 				var shootDanmaku;
 				window.video = video;
 				(function(){
