@@ -21,10 +21,10 @@ window.onload = function (){
             xsrfToken = getCookie("_xsrf");
             xhr.setRequestHeader("X-Xsrftoken", xsrfToken);
             xhr.send(JSON.stringify(data))
+			$("input").value = "";
 		} else {
 			return 0;
 		}
-		$("input").value = "";
 	}
 	window.addEventListener("message", function(evt){
 		if (!evt.data.send) {
