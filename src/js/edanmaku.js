@@ -5,6 +5,17 @@
 	function $(arg) {
 		return document.querySelector(arg);
 	}
+	function Pause(obj,iMinSecond){ 
+		if (window.eventList==null) window.eventList=new Array(); 
+		var ind=-1; 
+		for (var i=0;i<window.eventList.length;i++){ 
+			if (window.eventList[i]==null) { 
+				window.eventList[i]=obj; 
+				ind=i; 
+				break;
+			} 
+		}
+	}
 
 	var tools = {
 		getStyle: function(element, style) {
@@ -289,6 +300,8 @@
 							}
 						}, false);
 						CM.start();
+						var count = 0
+						Pause(this, 5000);
 						var tmp = PlayerInfo().time();
 						shootDanmaku = setInterval(function(){
 							consoel.log("danmaku(");
