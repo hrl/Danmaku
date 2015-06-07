@@ -1,5 +1,6 @@
 (function () {
 	var flag = 1;
+	var window.domain;
 	//basic functions 
 	function $(arg) {
 		return document.querySelector(arg);
@@ -205,53 +206,95 @@
 		// create a div for danmu to display
 		// and let user control the video
 		init: function (){
-			var video = $("video") || $("object") || window._player();
-			var shootDanmaku;
-			window.video = video;
-			video.addEventListener("canplay", function(){
-				if (flag) {
-					var height = tools.getStyle(video, "height");
-					var width = tools.getStyle(video, "width");
-					tools.warp(video, height, width);
-					var socket = new WebSocket("ws://112.74.106.159:2333/api/v1/danmakus/f26dc105ffe241aeb0afcd2c217e8355/tsukkomis/ws");
-					socket.addEventListener("open", function(){
-						socket.send(JSON.stringify({
-							action: "subscribe",
-							id: 1,
-							body: {}
-						}));
-					});
-					var CM = new CommentManager($(".edanmaku-video"));
-					CM.init();
-					socket.addEventListener("message", function(event){
-						var danmaku = JSON.parse(event.data).body;
-						if (danmaku.length) {
-							CM.load(danmaku);
-						} else {
-							CM.insert(danmaku);
-						}
-					}, false);
-				    video.addEventListener("playing", function(){
-					    CM.start();
-					    shootDanmaku = setInterval(function(){
-					    	CM.time(parseInt(video.currentTime));
-					    }, 100);
-    				}, false);	
-	    			video.addEventListener("pause", function(){
-		    			CM.stop();
-		    			clearInterval(shootDanmaku);
-			    	}, false)
-				}
-				flag = 0;
-			}, false);	
+			var video = $("video");
+			if (video) {
+				var shootDanmaku;
+				window.video = video;
+				video.addEventListener("canplay", function(){
+					if (flag) {
+						var height = tools.getStyle(video, "height");
+						var width = tools.getStyle(video, "width");
+						tools.warp(video, height, width);
+						var socket = new WebSocket("ws://112.74.106.159:2333/api/v1/danmakus/f26dc105ffe241aeb0afcd2c217e8355/tsukkomis/ws");
+						socket.addEventListener("open", function(){
+							socket.send(JSON.stringify({
+								action: "subscribe",
+								id: 1,
+								body: {}
+							}));
+						});
+						var CM = new CommentManager($(".edanmaku-video"));
+						CM.init();
+						socket.addEventListener("message", function(event){
+							var danmaku = JSON.parse(event.data).body;
+							if (danmaku.length) {
+								CM.load(danmaku);
+							} else {
+								CM.insert(danmaku);
+							}
+						}, false);
+						video.addEventListener("playing", function(){
+							CM.start();
+							shootDanmaku = setInterval(function(){
+								CM.time(parseInt(video.currentTime));
+							}, 100);
+						}, false);	
+						video.addEventListener("pause", function(){
+							CM.stop();
+							clearInterval(shootDanmaku);
+						}, false)
+					}
+					flag = 0;
+				}, false);
+			} else if (video = window._player()) { // if close
+				domian = "youku";
+				var shootDanmaku;
+				window.video = video;
+				(function(){
+					if (flag) {
+						var height = tools.getStyle(video, "height");
+						var width = tools.getStyle(video, "width");
+						tools.warp(video, height, width);
+						var socket = new WebSocket("ws://112.74.106.159:2333/api/v1/danmakus/f26dc105ffe241aeb0afcd2c217e8355/tsukkomis/ws");
+						socket.addEventListener("open", function(){
+							socket.send(JSON.stringify({
+								action: "subscribe",
+								id: 1,
+								body: {}
+							}));
+						});
+						var CM = new CommentManager($(".edanmaku-video"));
+						CM.init();
+						socket.addEventListener("message", function(event){
+							var danmaku = JSON.parse(event.data).body;
+							if (danmaku.length) {
+								CM.load(danmaku);
+							} else {
+								CM.insert(danmaku);
+							}
+						}, false);
+						video.addEventListener("playing", function(){
+							CM.start();
+							shootDanmaku = setInterval(function(){
+								CM.time(parseInt(video.currentTime));
+							}, 100);
+						}, false);	
+						video.addEventListener("pause", function(){
+							CM.stop();
+							clearInterval(shootDanmaku);
+						}, false)
+					}
+					flag = 0;
+				})()
+			}
 		},
-		startSend: function (iframe, video, danmakuId){
-			iframe.contentWindow.postMessage({
-				send: 1,
-				startTime: video.currentTime,
-                danmakuId: danmakuId
-			}, "*");
-		},
+startSend: function (iframe, video, danmakuId){
+	iframe.contentWindow.postMessage({
+		send: 1,
+		startTime: video.currentTime,
+		danmakuId: danmakuId
+	}, "*");
+},
 		// showDanmaku: function (socket){
 		// 	socket.addEventListener("danmaku", function(data){
 		// 		CM.insert(danmaku)
