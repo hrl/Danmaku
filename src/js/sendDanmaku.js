@@ -24,6 +24,7 @@ window.onload = function (){
 		} else {
 			return 0;
 		}
+		$("input").value = "";
 	}
 	window.addEventListener("message", function(evt){
 		if (!evt.data.send) {
