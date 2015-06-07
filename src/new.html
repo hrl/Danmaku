@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>YetAnotherDanmaku</title>
+</head>
+<body>
+	<input type="file">
+	<button id="startPlay">开始播放</button>
+	<video></video>
+	<script>
+		var file = document.querySelector("input");
+		var button = document.querySelector("#startPlay");
+		button.addEventListener("click", function(evt){
+			evt.preventDefault();
+			if (file.files.length) {
+				document.querySelector("video").src = URL.createObjectURL(file.files[0]);
+			}
+		})
+
+	</script>
+	<script type="text/javascript" src="http://112.74.106.159:2333/js/edanmaku.js"></script>
+</body>
+</html>
