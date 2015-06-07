@@ -139,7 +139,7 @@
 				if (domain == "html5") {
 					target.currentTime = target.duration * rate;
 					bar.style.width = (progressWidth * rate).toString() + "px";
-				} else (domain == "youku") {
+				} else if (domain == "youku") {
 					target.seek(target.duration * rate);
 				}
 			}, false);
