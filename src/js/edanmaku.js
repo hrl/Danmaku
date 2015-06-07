@@ -206,6 +206,8 @@
 		// and let user control the video
 		init: function (){
 			var video = $("video") || $("object");
+			var shootDanmaku;
+			window.video = video;
 			video.addEventListener("canplay", function(){
 				if (flag) {
 					var height = tools.getStyle(video, "height");
@@ -231,9 +233,13 @@
 					}, false);
 				    video.addEventListener("playing", function(){
 					    CM.start();
+					    shootDanmaku = setInterval(function(){
+					    	CM.(parseInt(video.currentTime));
+					    }, 100);
     				}, false);	
 	    			video.addEventListener("pause", function(){
 		    			CM.stop();
+		    			clearInterval(shootDanmaku);
 			    	}, false)
 				}
 				flag = 0;
