@@ -234,7 +234,7 @@
 				    video.addEventListener("playing", function(){
 					    CM.start();
 					    shootDanmaku = setInterval(function(){
-					    	CM.(parseInt(video.currentTime));
+					    	CM.time(parseInt(video.currentTime));
 					    }, 100);
     				}, false);	
 	    			video.addEventListener("pause", function(){
